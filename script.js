@@ -26,6 +26,7 @@ function divide(num1,num2){
 //Output: an integer
 function operate(func, num1, num2){
     let ans = "no answer";
+    console.log(func);
     switch(func){
         case "+":
             ans = add(num1,num2);
@@ -55,28 +56,47 @@ let testArray = [1,"+",10];
 // console.log(operate(testArray[1],testArray[0],testArray[2]));
 // displayNumbers(testArray);
 let currentArray = [];
+let readyToCalc = false;
 
 let buttons = document.querySelector(".buttonHolder");
 buttons.addEventListener("click", (e) => {
+
     if (e.target.className == "calc"){
         console.log(e.target);
         currentArray.push(e.target.textContent);
         displayNumbers(currentArray);
     }
-    
 
-    if(e.target.textContent == "="){
-        let toBeSolved = currentArray.pop();
-        console.log(currentArray);
+    
+    let testing = ArrayCalculate(currentArray);
+    console.log(testing);
+    if(typeof(testing[2]) == "integer"){
+        readyToCalc = true;
+    }
+    else{
+        readyToCalc = false;
+    }
+    
+    if(readyToCalc == true){
+        if(e.target.textContent == "="){
+        let toBeSolved = currentArray.pop(); //To get rid of the "="
         //Split numbers by opertator
-        let test = currentArray.findIndex((operator) => operator == "+" || operator == "-"
-        || operator == "*" || operator == "/");
-        let num1 = parseInt(currentArray.slice(0, test).join(""));
-        console.log(num1);
-        let num2 = parseInt(currentArray.slice(test+1).join(""));
-        console.log(num2);
-        let finalAns = operate(currentArray[test],num1,num2);
+        let validArray = ArrayCalculate(currentArray);
+        let finalAns = operate(validArray[0],validArray[1],validArray[2]);
         currentArray = [finalAns];
         displayNumbers(currentArray);
+        }
     }
+    
+
+
 })
+
+
+function ArrayCalculate(currentArray){
+    let test = currentArray.findIndex((operator) => operator == "+" || operator == "-"
+        || operator == "*" || operator == "/");
+        let num1 = parseInt(currentArray.slice(0, test).join(""));
+        let num2 = parseInt(currentArray.slice(test+1).join(""));
+        return [currentArray[test],num1,num2];
+}
