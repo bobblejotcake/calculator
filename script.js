@@ -71,9 +71,12 @@ buttons.addEventListener("click", (e) => {
         //Split numbers by opertator
         let test = currentArray.findIndex((operator) => operator == "+" || operator == "-"
         || operator == "*" || operator == "/");
-        console.log(test);
-
-        console.log(operate());
-        
+        let num1 = parseInt(currentArray.slice(0, test).join(""));
+        console.log(num1);
+        let num2 = parseInt(currentArray.slice(test+1).join(""));
+        console.log(num2);
+        let finalAns = operate(currentArray[test],num1,num2);
+        currentArray = [finalAns];
+        displayNumbers(currentArray);
     }
 })
