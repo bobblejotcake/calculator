@@ -21,7 +21,9 @@ function divide(num1,num2){
 
 
 
-
+//This function takes any two integers, and applies an operator to them
+//Input: two seperate integers
+//Output: an integer
 function operate(func, num1, num2){
     let ans = "no answer";
     switch(func){
@@ -42,4 +44,15 @@ function operate(func, num1, num2){
        
 }
 
-console.log(operate("/",1,2));
+//Changes the display of the calculator
+function displayNumbers(displayArray){
+    let display = document.querySelector("#display");
+    //Add them to the document element
+    display.textContent = displayArray.join("");
+}
+
+let testArray = [1,"+",10];
+// console.log(operate(testArray[1],testArray[0],testArray[2]));
+
+// displayNumbers(testArray);
+

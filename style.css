@@ -12,9 +12,19 @@
 
 
 .calc{
-    background-color: aqua;
+    background-color: rgba(237, 176, 5,1);
     border:1px black solid;
     border-radius: 2px;
     width:30px;
     height:30px;
+}
+
+.calc:hover{
+    background-color: rgba(251,186,3,1);
+    cursor: grab;
+}
+
+.calc:active{
+    background-color: rgba(222, 165, 4,1);
+    cursor: default;
 }
