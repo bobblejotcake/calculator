@@ -53,6 +53,27 @@ function displayNumbers(displayArray){
 
 let testArray = [1,"+",10];
 // console.log(operate(testArray[1],testArray[0],testArray[2]));
-
 // displayNumbers(testArray);
+let currentArray = [];
 
+let buttons = document.querySelector(".buttonHolder");
+buttons.addEventListener("click", (e) => {
+    if (e.target.className == "calc"){
+        console.log(e.target);
+        currentArray.push(e.target.textContent);
+        displayNumbers(currentArray);
+    }
+    
+
+    if(e.target.textContent == "="){
+        let toBeSolved = currentArray.pop();
+        console.log(currentArray);
+        //Split numbers by opertator
+        let test = currentArray.findIndex((operator) => operator == "+" || operator == "-"
+        || operator == "*" || operator == "/");
+        console.log(test);
+
+        console.log(operate());
+        
+    }
+})
