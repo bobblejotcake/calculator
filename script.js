@@ -52,39 +52,87 @@ function displayNumbers(displayArray){
     display.textContent = displayArray.join("");
 }
 
-let testArray = [1,"+",10];
-// console.log(operate(testArray[1],testArray[0],testArray[2]));
-// displayNumbers(testArray);
-let currentArray = [];
+
+let currentArray = []; //Array that's displayed
+let storedArray = []; //History of previous calculations
 let readyToCalc = false;
+let readyToCalcStorage = false;
 
-let buttons = document.querySelector(".buttonHolder");
+let buttons = document.querySelector(".container");
 buttons.addEventListener("click", (e) => {
-
-    if (e.target.className == "calc"){
-        console.log(e.target);
+    console.log(e.target);
+    if (e.target.classList.contains("add")){
         currentArray.push(e.target.textContent);
+        displayNumbers(currentArray);
+    }
+    else if (e.target.classList.contains("clear")){
+        currentArray = [];
+        storedArray = [];
+        displayNumbers(currentArray);
+    }
+    else if (e.target.classList.contains("backSpace")){
+        currentArray.pop();
         displayNumbers(currentArray);
     }
 
     
     let testing = ArrayCalculate(currentArray);
-    console.log(testing);
-    if(typeof(testing[2]) == "integer"){
+    let mergeCurrentAndStored = storedArray.concat(currentArray);
+    let testingStorage = ArrayCalculate(mergeCurrentAndStored);
+
+    if(testing[0] != undefined && Number.isInteger(testing[1]) 
+        && Number.isInteger(testing[2])){
         readyToCalc = true;
-    }
+        }
     else{
         readyToCalc = false;
     }
+
+    //Check the storage
+    if(testingStorage[0] != undefined && Number.isInteger(testingStorage[1]) 
+        && Number.isInteger(testingStorage[2])){
+        readyToCalcStorage = true;
+        }
+    else{
+        readyToCalcStorage = false;
+    }
+    console.log(mergeCurrentAndStored);
+    console.log(readyToCalcStorage);
+
+    
     
     if(readyToCalc == true){
-        if(e.target.textContent == "="){
-        let toBeSolved = currentArray.pop(); //To get rid of the "="
-        //Split numbers by opertator
-        let validArray = ArrayCalculate(currentArray);
-        let finalAns = operate(validArray[0],validArray[1],validArray[2]);
-        currentArray = [finalAns];
-        displayNumbers(currentArray);
+        const regex = /[+\-*/=]/;
+        const regexSymbols = /[+\-*]/;
+
+        if(regex.test(e.target.textContent)){
+            let validArray = ArrayCalculate(currentArray);
+            let finalAns = operate(validArray[0],validArray[1],validArray[2]);
+            currentArray = [];
+            storedArray = [finalAns]
+            displayNumbers(storedArray);
+            if (regexSymbols.test(e.target.textContent)){
+                storedArray.push(e.target.textContent);
+            }
+            console.log(storedArray);
+        }
+        
+    }
+    else if (readyToCalcStorage){
+        const regex = /[+\-*/=]/;
+        const regexSymbols = /[+\-*]/;
+
+        if(regex.test(e.target.textContent)){
+            let validArray = ArrayCalculate(mergeCurrentAndStored);
+            let finalAns = operate(validArray[0],validArray[1],validArray[2]);
+            currentArray = [];
+            storedArray = [];
+            storedArray = [finalAns]
+            displayNumbers(storedArray);
+            if (regexSymbols.test(e.target.textContent)){
+                storedArray.push(e.target.textContent);
+            }
+            console.log(storedArray);
         }
     }
     
