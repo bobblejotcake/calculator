@@ -57,12 +57,33 @@ let currentArray = []; //Array that's displayed
 let storedArray = []; //History of previous calculations
 let readyToCalc = false;
 let readyToCalcStorage = false;
+let allowNewOperator = false;
+const regex = /[+\-*/=]/;
+const regexSymbols = /[+\-*]/;
+
+//TO DO
+
+//Simplify code
+//Prevent users from dividing by 0
+//Prevent users from adding the same operator - it should use the last operator
+//used
 
 let buttons = document.querySelector(".container");
 buttons.addEventListener("click", (e) => {
-    console.log(e.target);
+    // console.log(e.target);
+    console.log(allowNewOperator);
     if (e.target.classList.contains("add")){
-        currentArray.push(e.target.textContent);
+        if(allowNewOperator && regexSymbols.test(e.target.textContent)){
+            storedArray.push(e.target.textContent);
+        }
+        else{
+            currentArray.push(e.target.textContent);
+        }
+        allowNewOperator = false;
+        // Check if there is more than one operator in either storage or current
+        //If so, pop the last indicator out if current
+        //Or prevent if stored + error message.
+        
         displayNumbers(currentArray);
     }
     else if (e.target.classList.contains("clear")){
@@ -74,6 +95,7 @@ buttons.addEventListener("click", (e) => {
         currentArray.pop();
         displayNumbers(currentArray);
     }
+
 
     
     let testing = ArrayCalculate(currentArray);
@@ -96,15 +118,10 @@ buttons.addEventListener("click", (e) => {
     else{
         readyToCalcStorage = false;
     }
-    console.log(mergeCurrentAndStored);
-    console.log(readyToCalcStorage);
 
     
     
     if(readyToCalc == true){
-        const regex = /[+\-*/=]/;
-        const regexSymbols = /[+\-*]/;
-
         if(regex.test(e.target.textContent)){
             let validArray = ArrayCalculate(currentArray);
             let finalAns = operate(validArray[0],validArray[1],validArray[2]);
@@ -114,25 +131,24 @@ buttons.addEventListener("click", (e) => {
             if (regexSymbols.test(e.target.textContent)){
                 storedArray.push(e.target.textContent);
             }
-            console.log(storedArray);
+            else{
+                allowNewOperator = true;
+            }
         }
-        
     }
     else if (readyToCalcStorage){
-        const regex = /[+\-*/=]/;
-        const regexSymbols = /[+\-*]/;
-
         if(regex.test(e.target.textContent)){
             let validArray = ArrayCalculate(mergeCurrentAndStored);
             let finalAns = operate(validArray[0],validArray[1],validArray[2]);
             currentArray = [];
-            storedArray = [];
             storedArray = [finalAns]
             displayNumbers(storedArray);
             if (regexSymbols.test(e.target.textContent)){
                 storedArray.push(e.target.textContent);
             }
-            console.log(storedArray);
+            else{
+                allowNewOperator = true;
+            }
         }
     }
     
