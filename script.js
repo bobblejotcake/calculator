@@ -64,8 +64,6 @@ const regexSymbols = /[+\-*/]/;
 
 //Simplify code
 //Prevent users from dividing by 0
-//Prevent users from adding the same operator - it should use the last operator
-//used
 
 let buttons = document.querySelector(".container");
 buttons.addEventListener("click", (e) => {
@@ -99,9 +97,7 @@ buttons.addEventListener("click", (e) => {
     let mergeCurrentAndStored = storedArray.concat(currentArray);
     let testingStorage = ArrayCalculate(mergeCurrentAndStored);
 
-    //If more than one operator is placed - ignore the first one
-    //Check if storage is filled and is an operator
-    console.log(`Checking time! ${storedArray}`);
+    //Check for two consecutive operators
     if(storedArray && regexSymbols.test(storedArray[storedArray.length-1])){
         if(regexSymbols.test(currentArray[currentArray.length-1])){
             alert("You have too many conscutive operations!");
@@ -120,6 +116,16 @@ buttons.addEventListener("click", (e) => {
         }
     }
 
+    console.log(mergeCurrentAndStored);
+    //Check for division by 0
+    let checkfor0 = parseInt(
+        mergeCurrentAndStored[mergeCurrentAndStored.length-1]);
+    let checkfor02 = mergeCurrentAndStored[mergeCurrentAndStored.length-2];
+    if (checkfor0 == 0 && regexSymbols.test(checkfor02)){
+        alert("Don't divide by 0!");
+        currentArray.pop();
+        displayNumbers(currentArray);
+    }
 
     //If not check the current array for two
 
